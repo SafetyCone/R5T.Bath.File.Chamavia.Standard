@@ -11,9 +11,13 @@ namespace R5T.Bath.File.Chamavia.Standard
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection AddHumanOutputFilePathProvider_DirectConfigurationBased(this IServiceCollection services)
+        public static IServiceCollection AddHumanOutputFilePathProvider_DirectConfigurationBased<TStringlyTypedPathOperator>(this IServiceCollection services)
+            where TStringlyTypedPathOperator : class, IStringlyTypedPathOperator
         {
-            services.AddSingleton<IHumanOutputFilePathProvider, DirectConfigurationBasedHumanOutputFilePathProvider>();
+            services
+                .AddSingleton<IHumanOutputFilePathProvider, DirectConfigurationBasedHumanOutputFilePathProvider>()
+                .TryAddSingletonFluent<IStringlyTypedPathOperator, TStringlyTypedPathOperator>()
+                ;
 
             return services;
         }
